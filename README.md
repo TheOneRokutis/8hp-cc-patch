@@ -60,7 +60,8 @@ Reverse and neutral are left intact, and because the replacement is exactly 12 b
 ## Usage
 
 ```
-python msv80_gear_patch.py
+Download python
+Open gear.table.patcher.py
 ```
 
 ## Community & Support
