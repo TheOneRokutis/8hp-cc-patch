@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MSV80 Gear Table Patcher
+Gear Table Patcher
 ------------------------
 Lightweight tkinter tool. Loads an MSV80 .bin, locates a known 12-byte
 gear-table signature, and (after confirmation) patches it in place to a
@@ -36,7 +36,7 @@ def find_all(data: bytes, needle: bytes):
 class App:
     def __init__(self, root):
         self.root = root
-        self.root.title("MSV80 Gear Table Patcher")
+        self.root.title("Gear Table Patcher")
         self.root.geometry("520x260")
         self.root.resizable(False, False)
 
@@ -44,7 +44,7 @@ class App:
         self.match_offset = None   # confirmed single match offset
 
         tk.Label(
-            root, text="MSV80 Gear Table Patcher",
+            root, text="Gear Table Patcher",
             font=("Segoe UI", 14, "bold")
         ).pack(pady=(16, 4))
 
