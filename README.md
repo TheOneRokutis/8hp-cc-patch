@@ -94,4 +94,4 @@ This tool modifies engine control unit firmware. Flashing modified firmware carr
  
 ## License
  
-[MIT](LICENSE)
+[GNU GPLv3](LICENSE)
