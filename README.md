@@ -2,8 +2,6 @@
  
 A small GUI tool that patches BMW **MSV80 / MSD80 / MSD81** DME firmware images to restore cruise control in **8th gear** after a native ZF **8HP** automatic swap into an E-series chassis.
  
-*(Currently tested on MSV80. MSD80 / MSD81 should work too — they share the same gear-decode bytes — but are unconfirmed.)*
- 
 ## What it does
  
 When an 8-speed ZF 8HP is natively swapped into an E-series BMW that never came with one from the factory (E8x / E9x / E6x), the engine DME's gearbox-data decode has no entry for 8th gear. The transmission reports 8th on the bus as gear code `0xC`, but the DME only recognizes the codes for gears 1–7 (plus reverse and neutral) and treats anything else as **neutral**. So the moment the car shifts into 8th, the DME thinks it's in neutral and cruise control drops out.
@@ -12,9 +10,9 @@ This tool patches the gear-decode routine so code `0xC` decodes correctly to 8th
  
 ## Supported ECUs
  
-- **MSV80** — tested, works
-- **MSD80** — should work (untested)
-- **MSD81** — should work (untested)
+  **MSV80**
+  **MSD80** 
+  **MSD81** 
 
 All three use the **identical** gear-decode byte sequence, so the same patch applies to each. The tool locates the patch site by **byte signature**, not a fixed address, so it works across software versions as long as the signature is present.
  
@@ -47,14 +45,14 @@ Reverse and neutral are left intact, and because the replacement is exactly 12 b
 - **Signature found more than once** → patch refused; open an issue. (Should never happen in practice.)
 ## DSC coding
  
-The gear patch fixes the engine side. On some cars you also need a DSC coding change — symptoms are:
+The gear patch fixes the engine side. On some cars you also need a DSC coding change - symptoms are:
  
-- when you try to engage cruise in 8th you still get **5E62 – DSC: Transmission control interface**, and/or
+- when you try to engage cruise in 8th you still get **5E62 - DSC: Transmission control interface**, and/or
 - the DSC logs **D378**, a PT-CAN timeout on the reverse-gear-status message.
 Read the DSC with NCS Expert, load its `FSW_PSW.trc` in NCS Dummy, and change:
  
-- **`C0F_GETRIEBE` → `wert_00`** — switches the DSC's gearbox logic to manual. This clears the 5E62 interface error and lets cruise hold in 8th.
-- **`C0F_AFH_HSA` → `wert_00`** — disables Hill Start Assist. HSA is the only DSC function that needs the reverse-gear-status message, which a native 8HP swap never broadcasts, so it times out as D378. Turning HSA off removes the dependency and the fault disappears.
+- **`C0F_GETRIEBE` → `wert_00`** - switches the DSC's gearbox logic to manual. This clears the 5E62 interface error and lets cruise hold in 8th.
+- **`C0F_AFH_HSA` → `wert_00`** - disables Hill Start Assist. HSA is the only DSC function that needs the reverse-gear-status message, which a native 8HP swap never broadcasts, so it times out as D378. Turning HSA off removes the dependency and the fault disappears.
 Code the DSC, clear the fault memory, and both errors should be gone. The only thing you lose is Hill Start Assist (the brief brake-hold when pulling away on an incline); ABS, traction, and the rest of DSC are unaffected.
  
 ## Requirements
@@ -73,7 +71,7 @@ Code the DSC, clear the fault memory, and both errors should be gone. The only t
 ```
 1. Install Python 3.8+
 2. Run gear.table.patcher.py
-3. Select your full DME read — the tool finds the signature and writes a patched copy
+3. Select your full DME read - the tool finds the signature and writes a patched copy
 4. Correct the checksum, then flash
 ```
  
@@ -86,8 +84,8 @@ For questions, help, and general discussion regarding native 8HP swaps, join the
  
 ## Credits
  
-- **Aleksandre (NDH Automotive)** — for developing the native 8HP swap and for testing this patch
-- **TheFiztec** — for creating the original MSD81 patch, which served as the foundation and starting point for this project
+- **Aleksandre (NDH Automotive)** - for developing the native 8HP swap and for testing this patch
+- **TheFiztec** - for creating the original MSD81 patch, which served as the foundation and starting point for this project
 ## Disclaimer
  
 This tool modifies engine control unit firmware. Flashing modified firmware carries risk, up to rendering the ECU inoperable. Use only on hardware you own or are authorized to modify; always keep an unmodified backup of the original read; correct checksums before flashing; have a recovery method available. You are solely responsible for any use. Provided as-is, without warranty of any kind.
