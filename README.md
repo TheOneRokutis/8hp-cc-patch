@@ -10,9 +10,9 @@ This tool patches the gear-decode routine so code `0xC` decodes correctly to 8th
  
 ## Supported ECUs
  
-  **MSV80**
-  **MSD80** 
-  **MSD81** 
+ - **MSV80**
+ - **MSD80** 
+ - **MSD81** 
 
 All three use the **identical** gear-decode byte sequence, so the same patch applies to each. The tool locates the patch site by **byte signature**, not a fixed address, so it works across software versions as long as the signature is present.
  
